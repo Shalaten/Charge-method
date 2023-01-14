@@ -1,19 +1,22 @@
 #pragma once
 
-template <typename T>
+#include "main.h"
+#include <ctime>
+
 class Point {
 public:
 	Point();
-	/*Point(double x, double y);*/
-	~Point();
+	Point(double x, double y);
 
 	int GetId();
-	T GetX();
-	T GetY();
 
-	void SetX(T x);
-	void SetY(T y);
+	double GetX();
+	double GetY();
+
+	void SetX(double x);
+	void SetY(double y);
+	~Point();
 private:
 	int  static id;
-	T x, y;
+	double x, y;
 };

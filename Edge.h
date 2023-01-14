@@ -1,7 +1,13 @@
 #pragma once
-#include "Point.h";
+
+#include "Point.h"
 
 class Edge {
-	Edge(Point oneP, Point twoP);
+public:
+	Edge(Point &onePoint, Point &twoPoint);
 	~Edge();
+private:
+	Point onePoint, twoPoint;
+	double length = 0;
+	double FindLength();
 };
