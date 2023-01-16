@@ -1,7 +1,6 @@
 #pragma once
 
 #include "main.h"
-#include <ctime>
 
 class Point {
 public:

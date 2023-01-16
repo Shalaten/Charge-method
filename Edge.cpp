@@ -5,10 +5,16 @@ Edge::~Edge()
 
 }
 
+double Edge::GetLength()
+{
+	return length;
+}
+
 Edge::Edge(Point &onePoint, Point &twoPoint)
 {
 	this->onePoint = onePoint;
 	this->twoPoint = twoPoint;
+	length = FindLength();
 }
 
 
