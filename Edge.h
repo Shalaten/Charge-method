@@ -4,6 +4,7 @@
 
 class Edge {
 public:
+	Edge();
 	Edge(Point &onePoint, Point &twoPoint);
 	~Edge();
 	double GetLength();
