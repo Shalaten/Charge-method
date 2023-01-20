@@ -11,9 +11,9 @@ public:
 	void GenerateRandPoints(int amount);
 	void GenerateEdgeMatrix();
 	void GenerateCharges();
-	int pointsAmount = 0;
 
 private:
+	int pointsAmount = 0;
 	std::vector<Point> points;
 	std::vector<std::vector<Edge>> edges;
 	std::vector<std::vector<double>> charges;

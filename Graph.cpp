@@ -72,20 +72,129 @@ void Graph::GenerateCharges()
 								double twoSum = edges[twoP][threeP].GetLength() + edges[oneP][fourP].GetLength();
 								double threeSum = edges[oneP][threeP].GetLength() + edges[twoP][fourP].GetLength();
 								//----------------------------|
-								if (oneSum > twoSum && twoSum > threeSum){}
-								if (oneSum > threeSum && threeSum > twoSum){}
-								if (oneSum > twoSum && twoSum == threeSum){}
-								if (twoSum == threeSum && twoSum > oneSum){}
+								// ONE ONE ONE ONE ONE
+								if (oneSum > twoSum && twoSum > threeSum) {
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() - 3);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() - 3);
 
-								if (twoSum > oneSum && oneSum > threeSum){}
-								if (twoSum > threeSum && threeSum > oneSum){}
-								if (twoSum > oneSum && oneSum == threeSum){}
-								if (oneSum == threeSum && oneSum > twoSum){}
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 2);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 2);
 
-								if (threeSum > oneSum && oneSum > twoSum){}
-								if (threeSum > twoSum && twoSum > oneSum){}
-								if (threeSum > oneSum && oneSum == twoSum){}
-								if (oneSum == twoSum && oneSum > threeSum){}
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 1);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 1);
+								}
+								if (oneSum > threeSum && threeSum > twoSum) {
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() - 3);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() - 3);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 2);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 2);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 1);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 1);
+								}
+								if (oneSum > twoSum && twoSum == threeSum) { 
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() - 3);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() - 3);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 1.5);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 1.5);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 1.5);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 1.5);
+								}
+								if (twoSum == threeSum && twoSum > oneSum) {
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() - 1.5);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() - 1.5);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() - 1.5);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() - 1.5);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 3);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 3);
+								}
+								// TWO TWO TWO TWO TWO
+								if (twoSum > oneSum && oneSum > threeSum) {
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() - 3);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() - 3);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 1);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 1);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 2);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 2);
+								}
+								if (twoSum > threeSum && threeSum > oneSum) {
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() - 3);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() - 3);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 1);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 1);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 2);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 2);
+								}
+								if (twoSum > oneSum && oneSum == threeSum) {
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() - 3);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() - 3);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 1.5);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 1.5);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 1.5);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 1.5);
+								}
+								if (oneSum == threeSum && oneSum > twoSum) {
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() - 1.5);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() - 1.5);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() - 1.5);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() - 1.5);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 3);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 3);
+								}
+								// THREE THREE THREE THREE THREE
+								if (threeSum > oneSum && oneSum > twoSum) {
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() - 3);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() - 3);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 1);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 1);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 3);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 2);
+								}
+								if (threeSum > twoSum && twoSum > oneSum) {
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() - 3);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() - 3);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 1);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 1);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 2);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 2);
+								}
+								if (threeSum > oneSum && oneSum == twoSum) {
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() - 3);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() - 3);
+
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() + 1.5);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() + 1.5);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() + 1.5);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() + 1.5);
+								}
+								if (oneSum == twoSum && oneSum > threeSum) {
+									edges[oneP][twoP].SetCharge(edges[oneP][twoP].GetCharge() - 1.5);
+									edges[threeP][fourP].SetCharge(edges[threeP][fourP].GetCharge() - 1.5);
+
+									edges[twoP][threeP].SetCharge(edges[twoP][threeP].GetCharge() - 1.5);
+									edges[oneP][fourP].SetCharge(edges[oneP][fourP].GetCharge() - 1.5);
+
+									edges[oneP][threeP].SetCharge(edges[oneP][threeP].GetCharge() + 3);
+									edges[twoP][fourP].SetCharge(edges[twoP][fourP].GetCharge() + 3);
+								}
 
 								if (oneSum == twoSum && twoSum == threeSum){}
 							}

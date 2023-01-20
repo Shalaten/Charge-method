@@ -4,11 +4,11 @@
 
 int main(int argc, char* argv[]) {
 	setlocale(LC_ALL, "ru");
-	srand(time(NULL));
+	//srand(time(NULL));
 
 	Graph graph;
 
-	int amount = 10;
+	int amount = 4;
 	std::cout << "Amount of Vertices:    ";
 	//std::cin >> amount;
 	std::cout << std::endl;
@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 	graph.GenerateRandPoints(amount);
 	graph.GenerateEdgeMatrix();
 	graph.GenerateCharges();
-	// Печать
+
 	for (int i = 0; i < amount; ++i) {
 		for (int j = 0; j < amount; ++j) {
 			std::cout << graph.GetEdges()[i][j].GetLength() << "\t";
@@ -25,13 +25,14 @@ int main(int argc, char* argv[]) {
 		std::cout << std::endl;
 	}
 
+	for (int i = 0; i < amount; ++i) {
+		for (int j = 0; j < amount; ++j) {
+			std::cout << graph.GetEdges()[i][j].GetCharge() << "\t";
+		}
+		std::cout << std::endl;
+	}
 	
 
-
-	/*for (auto& point : graph.GetPoints()) {
-
-		std::cout << "X-   "<< point.GetX()<<"    Y-   "<< point.GetY() << std::endl;
-	}*/
 	system("pause");
 	return 0;
 }

@@ -10,6 +10,16 @@ double Edge::GetLength()
 	return length;
 }
 
+double Edge::GetCharge()
+{
+	return charge;
+}
+
+void Edge::SetCharge(double charge)
+{
+	this->charge = charge;
+}
+
 Edge::Edge()
 {
 }
