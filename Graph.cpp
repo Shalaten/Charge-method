@@ -14,11 +14,6 @@ std::vector<std::vector<Edge>>& Graph::GetEdges()
 	return edges;
 }
 
-std::vector<std::vector<double>>& Graph::GetCharges()
-{
-	return charges;
-}
-
 void Graph::GenerateRandPoints(int amount)
 {
 	if (points.capacity() == 0) {
@@ -31,6 +26,7 @@ void Graph::GenerateRandPoints(int amount)
 		}
 		// init pointsAmount
 		pointsAmount = points.size();
+		// init chargePoints
 	}
 }
 
@@ -57,10 +53,6 @@ void Graph::GenerateEdgeMatrix()
 
 void Graph::GenerateCharges()
 {
-	charges.resize(pointsAmount);
-	for (auto& charge : charges) {
-		charge.resize(pointsAmount);
-	}
 	for (int oneP = 0; oneP < pointsAmount; oneP++) {
 		for (int twoP = 0; twoP < pointsAmount; twoP++) {
 			if (oneP != twoP) {
@@ -206,4 +198,66 @@ void Graph::GenerateCharges()
 	}
 }
 
+void Graph::FindMostChargePoints()
+{
+	std::vector<bool> testChargePoints;
+	testChargePoints.resize(pointsAmount);
+	double maxCharge = 0;
+	for (int i = 0; i < pointsAmount; ++i) {
+		for (int j = i + 1; j < pointsAmount; ++j) {
+			if (edges[i][j].GetCharge() > maxCharge)
+				maxCharge = edges[i][j].GetCharge();
+		}
+	}
+	for (int i = 0; i < pointsAmount; ++i) {
+		for (int j = i + 1; j < pointsAmount; ++j) {
+			if (edges[i][j].GetCharge() == maxCharge) {
+				testChargePoints[i] = true;
+				testChargePoints[j] = true;
+			}
+		}
+	}
+	for (int i = 0; i < pointsAmount; ++i) {
+		if (testChargePoints[i])
+			chargePoints.push_back(i);
+	}
+}
+
+std::vector<int>& Graph::GetChargePoints()
+{
+	return chargePoints;
+}
+
+std::vector<std::vector<int>>& Graph::GetShortWays()
+{
+	return shortWays;
+}
+
+void Graph::FindWays()
+{
+	for (int i = 0; i < chargePoints.size(); ++i) {
+		std::vector<int> way;
+		way.reserve(pointsAmount);
+		way.push_back(chargePoints[i]);
+		std::vector<bool> usedPoints;
+		usedPoints.resize(pointsAmount);
+		usedPoints[chargePoints[i]] = true;
+		int counterVar = 1;
+		int nextPoint = chargePoints[i];
+		while (counterVar < pointsAmount) {
+			double maxPointCharge = -100000;
+			for (int j = 0; j < pointsAmount; ++j) {
+				if (maxPointCharge < edges[chargePoints[way.back()]][j].GetCharge() && usedPoints[j] == false) {
+					maxPointCharge = edges[chargePoints[way.back()]][j].GetCharge();
+					nextPoint = j;
+				}
+			}
+			usedPoints[nextPoint] = true;
+			way.push_back(nextPoint);
+			counterVar++;
+		}
+		way.push_back(chargePoints[i]);
+		shortWays.push_back(way);
+	}
+}
 

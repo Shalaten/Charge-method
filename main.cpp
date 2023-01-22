@@ -17,6 +17,8 @@ int main(int argc, char* argv[]) {
 	graph.GenerateRandPoints(amount);
 	graph.GenerateEdgeMatrix();
 	graph.GenerateCharges();
+	graph.FindMostChargePoints();
+	graph.FindWays();
 
 	for (int i = 0; i < amount; ++i) {
 		for (int j = 0; j < amount; ++j) {
@@ -25,13 +27,19 @@ int main(int argc, char* argv[]) {
 		std::cout << std::endl;
 	}
 
+	std::cout << std::endl;
 	for (int i = 0; i < amount; ++i) {
 		for (int j = 0; j < amount; ++j) {
 			std::cout << graph.GetEdges()[i][j].GetCharge() << "\t";
 		}
 		std::cout << std::endl;
 	}
-	
+
+	std::cout << std::endl;
+	for (int i = 0; i < graph.GetChargePoints().size(); ++i)
+		std::cout << graph.GetChargePoints()[i] << "\t";
+
+	graph.GetShortWays();
 
 	system("pause");
 	return 0;
