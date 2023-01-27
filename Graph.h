@@ -10,6 +10,8 @@ public:
 	void GenerateRandPoints(int amount);
 	void GenerateEdgeMatrix();
 	void GenerateCharges();
+	void SumChargeGenerate(int oneS, int twoS, int threeS, int fourS, double chargeS);
+
 	void FindMostChargePoints();
 	std::vector<int>& GetChargePoints();
 	std::vector<std::vector<int>>& GetShortWays();

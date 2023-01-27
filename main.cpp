@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
 
 	Graph graph;
 
-	int amount = 6;
+	int amount = 4;
 	std::cout << "Amount of Vertices:    ";
 	//std::cin >> amount;
 	std::cout << std::endl;
