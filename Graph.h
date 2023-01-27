@@ -14,6 +14,13 @@ public:
 	std::vector<int>& GetChargePoints();
 	std::vector<std::vector<int>>& GetShortWays();
 	void FindWays();
+	void FindWaysRecursion(int lastPoint, std::vector<int>& way, std::vector<bool>& usedPoints);
+	void BroodForce(std::vector<int> wayM, int counterM, double sumWeightM, int lastPoint, std::vector<bool> checkedPointsM);
+	void ShortWayUseBroodForce();
+	double minWeight = 10000000;
+	std::vector<int> minWay;
+
+	void PrintShortWays();
 private:
 	int pointsAmount = 0;
 	std::vector<int> chargePoints;

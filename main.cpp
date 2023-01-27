@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
 
 	Graph graph;
 
-	int amount = 4;
+	int amount = 6;
 	std::cout << "Amount of Vertices:    ";
 	//std::cin >> amount;
 	std::cout << std::endl;
@@ -18,7 +18,6 @@ int main(int argc, char* argv[]) {
 	graph.GenerateEdgeMatrix();
 	graph.GenerateCharges();
 	graph.FindMostChargePoints();
-	graph.FindWays();
 
 	for (int i = 0; i < amount; ++i) {
 		for (int j = 0; j < amount; ++j) {
@@ -35,11 +34,27 @@ int main(int argc, char* argv[]) {
 		std::cout << std::endl;
 	}
 
+
+	graph.FindWays();
 	std::cout << std::endl;
 	for (int i = 0; i < graph.GetChargePoints().size(); ++i)
 		std::cout << graph.GetChargePoints()[i] << "\t";
 
-	graph.GetShortWays();
+	std::cout << std::endl;
+	std::cout << std::endl;
+	graph.PrintShortWays();
+
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << "BROOD FORCE" << std::endl;
+	graph.ShortWayUseBroodForce();
+	for (auto point : graph.minWay) {
+		std::cout << point << "\t";
+	}
+	std::cout << "Weight - "<< graph.minWeight << std::endl;
+	
+	
+	
 
 	system("pause");
 	return 0;

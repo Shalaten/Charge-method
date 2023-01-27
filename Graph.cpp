@@ -235,29 +235,88 @@ std::vector<std::vector<int>>& Graph::GetShortWays()
 
 void Graph::FindWays()
 {
-	for (int i = 0; i < chargePoints.size(); ++i) {
+	for (const auto& point : chargePoints) {
 		std::vector<int> way;
-		way.reserve(pointsAmount);
-		way.push_back(chargePoints[i]);
+		way.reserve(pointsAmount + 1);
+		way.push_back(point);
 		std::vector<bool> usedPoints;
 		usedPoints.resize(pointsAmount);
-		usedPoints[chargePoints[i]] = true;
-		int counterVar = 1;
-		int nextPoint = chargePoints[i];
-		while (counterVar < pointsAmount) {
-			double maxPointCharge = -100000;
-			for (int j = 0; j < pointsAmount; ++j) {
-				if (maxPointCharge < edges[chargePoints[way.back()]][j].GetCharge() && usedPoints[j] == false) {
-					maxPointCharge = edges[chargePoints[way.back()]][j].GetCharge();
-					nextPoint = j;
+		usedPoints[point] = true;
+		FindWaysRecursion(point, way, usedPoints);
+	}
+}
+
+void Graph::FindWaysRecursion(int lastPoint, std::vector<int> &way, std::vector<bool>& usedPoints)
+{
+	double maxCharge = -1000000;
+	double maxPoint = NULL;
+	for (int i = 0; i < pointsAmount; ++i) {
+		if (edges[lastPoint][i].GetCharge() > maxCharge && !usedPoints[i] && lastPoint != i) {
+			maxCharge = edges[lastPoint][i].GetCharge();
+			maxPoint = i;
+		}
+	}
+	way.push_back(maxPoint);
+	lastPoint = maxPoint;
+	usedPoints[maxPoint] = true;
+	if (way.size() != pointsAmount) 
+		FindWaysRecursion(lastPoint, way, usedPoints);
+	else {
+		way.push_back(way[0]);
+		shortWays.push_back(way);
+	}
+}
+
+void Graph::BroodForce(std::vector<int> wayM, int counterM, double sumWeightM, int lastPoint, std::vector<bool> checkedPointsM)
+{
+	for (int i = 0; i < pointsAmount; i++) {
+		int counter = counterM + 1;
+		double sumWeight = sumWeightM;
+		std::vector<int> way = wayM;
+		std::vector<bool> checkedPoints = checkedPointsM;
+		if (edges[lastPoint][i].GetLength() != 0) {
+			if (counter < pointsAmount - 1 && !checkedPoints[i]) {
+				sumWeight += edges[lastPoint][i].GetLength();
+				way.push_back(i);
+				checkedPoints[i] = true;
+				BroodForce(way, counter, sumWeight, i, checkedPoints);
+			}
+			else if (counter == pointsAmount - 1 && !checkedPoints[i]) {
+				sumWeight += edges[i][lastPoint].GetLength();
+				sumWeight += edges[way[0]][i].GetLength();
+				way.push_back(i);
+				if (sumWeight < minWeight) {
+					minWay = way;
+					minWeight = sumWeight;
 				}
 			}
-			usedPoints[nextPoint] = true;
-			way.push_back(nextPoint);
-			counterVar++;
 		}
-		way.push_back(chargePoints[i]);
-		shortWays.push_back(way);
+	}
+}
+
+void Graph::ShortWayUseBroodForce()
+{
+	for (int i = 0; i < pointsAmount; ++i) {
+		int counter = 0;
+		double sumWeight = 0;
+		std::vector<int> way;
+		way.push_back(i);
+		std::vector<bool> checkedPoints;
+		checkedPoints.resize(pointsAmount);
+		checkedPoints[i] = true;
+		BroodForce(way, counter, sumWeight, i, checkedPoints);
+	}
+}
+
+void Graph::PrintShortWays()
+{
+	for (const auto& shortWay : shortWays) {
+		double commonWeight = 0;
+		for (int j = 0; j < pointsAmount; ++j) {
+			commonWeight += edges[shortWay[j]][shortWay[j + 1]].GetLength();
+			std::cout << shortWay[j]<< " - " << shortWay[j + 1] << "\t" << edges[shortWay[j]][shortWay[j + 1]].GetLength() << "\t | \t";
+		}
+		std::cout << "Weight -   " << commonWeight << std::endl;
 	}
 }
 
