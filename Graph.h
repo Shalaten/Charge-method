@@ -11,6 +11,8 @@ public:
 	void GenerateEdgeMatrix();
 	void GenerateCharges();
 	void SumChargeGenerate(int oneS, int twoS, int threeS, int fourS, double chargeS);
+	void SumTestPlus(int oneS, int twoS, int threeS, int fourS, double chargeS);
+	void SumTestMinus(int oneS, int twoS, int threeS, int fourS, double chargeS);
 
 	void FindMostChargePoints();
 	std::vector<int>& GetChargePoints();

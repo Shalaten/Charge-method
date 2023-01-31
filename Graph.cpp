@@ -67,7 +67,8 @@ void Graph::GenerateCharges()
 								if (oneSum > twoSum && twoSum > threeSum) {
 									SumChargeGenerate(oneP, twoP, threeP, fourP, -3);
 
-									//SumChargeGenerate(twoP, threeP, oneP, fourP, 1);
+									SumChargeGenerate(twoP, threeP, oneP, fourP, 1);
+									//SumTest(twoP, threeP, oneP, fourP);
 
 									SumChargeGenerate(oneP, threeP, twoP, fourP, 2);
 								}
@@ -76,9 +77,11 @@ void Graph::GenerateCharges()
 
 									SumChargeGenerate(twoP, threeP, oneP, fourP, 2);
 
-									//SumChargeGenerate(oneP, threeP, twoP, fourP, 1);
+									SumChargeGenerate(oneP, threeP, twoP, fourP, 1);
+									//SumTest(oneP, threeP, twoP, fourP);
 								}
 								else if (oneSum > twoSum && twoSum == threeSum) { 
+									std::cout << "FAIL" << std::endl;
 									SumChargeGenerate(oneP, twoP, threeP, fourP, -3);
 
 									SumChargeGenerate(twoP, threeP, oneP, fourP, 1.5);
@@ -86,6 +89,7 @@ void Graph::GenerateCharges()
 									SumChargeGenerate(oneP, threeP, twoP, fourP, 1.5);
 								}
 								else if (twoSum == threeSum && twoSum > oneSum) {
+									std::cout << "FAIL" << std::endl;
 									SumChargeGenerate(oneP, threeP, twoP, fourP, -1.5);
 
 									SumChargeGenerate(twoP, threeP, oneP, fourP, -1.5);
@@ -96,14 +100,16 @@ void Graph::GenerateCharges()
 								else if (twoSum > oneSum && oneSum > threeSum) {
 									SumChargeGenerate(twoP, threeP, oneP, fourP, -3);
 
-									//SumChargeGenerate(oneP, twoP, threeP, fourP, 1);
+									SumChargeGenerate(oneP, twoP, threeP, fourP, 1);
+									//SumTest(oneP, twoP, threeP, fourP);
 
 									SumChargeGenerate(oneP, threeP, twoP, fourP, 2);
 								}
 								else if (twoSum > threeSum && threeSum > oneSum) {
 									SumChargeGenerate(twoP, threeP, oneP, fourP, -3);
 
-									//SumChargeGenerate(oneP, threeP, twoP, fourP, 1);
+									SumChargeGenerate(oneP, threeP, twoP, fourP, 1);
+									//SumTest(oneP, threeP, twoP, fourP);
 
 									SumChargeGenerate(oneP, twoP, threeP, fourP, 2);
 								}
@@ -125,14 +131,16 @@ void Graph::GenerateCharges()
 								else if (threeSum > oneSum && oneSum > twoSum) {
 									SumChargeGenerate(oneP, threeP, twoP, fourP, -3);
 
-									//SumChargeGenerate(oneP, twoP, threeP, fourP, 1);
+									SumChargeGenerate(oneP, twoP, threeP, fourP, 1);
+									//SumTest(oneP, twoP, threeP, fourP);
 
 									SumChargeGenerate(twoP, threeP, oneP, fourP, 2);
 								}
 								else if (threeSum > twoSum && twoSum > oneSum) {
 									SumChargeGenerate(oneP, threeP, twoP, fourP, -3);
 
-									//SumChargeGenerate(twoP, threeP, oneP, fourP, 1);
+									SumChargeGenerate(twoP, threeP, oneP, fourP, 1);
+									//SumTest(twoP, threeP, oneP, fourP);
 
 									SumChargeGenerate(oneP, twoP, threeP, fourP, 2);
 								}
@@ -167,6 +175,36 @@ void Graph::SumChargeGenerate(int oneS, int twoS, int threeS, int fourS, double 
 {
 	edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + chargeS);
 	edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + chargeS);
+}
+
+void Graph::SumTestPlus(int oneS, int twoS, int threeS, int fourS, double chargeS) {
+	if (edges[oneS][twoS].GetLength() > edges[threeS][fourS].GetLength()) {
+		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + chargeS / 2);
+		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + chargeS);
+	}
+	else if (edges[oneS][twoS].GetLength() < edges[threeS][fourS].GetLength()) {
+		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + chargeS);
+		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + chargeS / 2);
+	}
+	else if (edges[oneS][twoS].GetLength() == edges[threeS][fourS].GetLength()) {
+		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + 1.5 * chargeS / 2);
+		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + 1.5 * chargeS / 2);
+	}
+}
+
+void Graph::SumTestMinus(int oneS, int twoS, int threeS, int fourS, double chargeS) {
+	if (edges[oneS][twoS].GetLength() > edges[threeS][fourS].GetLength()) {
+		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + chargeS);
+		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + chargeS / 2);
+	}
+	else if (edges[oneS][twoS].GetLength() < edges[threeS][fourS].GetLength()) {
+		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + chargeS / 2);
+		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + chargeS);
+	}
+	else if (edges[oneS][twoS].GetLength() == edges[threeS][fourS].GetLength()) {
+		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + 1.5 * chargeS / 2);
+		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + 1.5 * chargeS / 2);
+	}
 }
 
 void Graph::FindMostChargePoints()
