@@ -4,11 +4,11 @@
 
 int main(int argc, char* argv[]) {
 	setlocale(LC_ALL, "ru");
-	//srand(time(NULL));
+	srand(time(NULL));
 
 	Graph graph;
 
-	int amount = 4;
+	int amount = 8;
 	std::cout << "Amount of Vertices:    ";
 	//std::cin >> amount;
 	std::cout << std::endl;
@@ -35,13 +35,13 @@ int main(int argc, char* argv[]) {
 	}
 
 
-	graph.FindWays();
 	std::cout << std::endl;
 	for (int i = 0; i < graph.GetChargePoints().size(); ++i)
 		std::cout << graph.GetChargePoints()[i] << "\t";
 
 	std::cout << std::endl;
 	std::cout << std::endl;
+	graph.FindWays();
 	graph.PrintShortWays();
 
 	std::cout << std::endl;
@@ -59,7 +59,6 @@ int main(int argc, char* argv[]) {
 	system("pause");
 	return 0;
 }
-
 
 
 

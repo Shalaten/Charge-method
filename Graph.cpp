@@ -65,20 +65,10 @@ void Graph::GenerateCharges()
 								//----------------------------|
 								// ONE ONE ONE ONE ONE
 								if (oneSum > twoSum && twoSum > threeSum) {
-									SumChargeGenerate(oneP, twoP, threeP, fourP, -3);
-
-									SumChargeGenerate(twoP, threeP, oneP, fourP, 1);
-									//SumTest(twoP, threeP, oneP, fourP);
-
-									SumChargeGenerate(oneP, threeP, twoP, fourP, 2);
+									EdgeCompare(edges[oneP][threeP], edges[twoP][fourP], edges[twoP][threeP], edges[oneP][fourP], edges[oneP][twoP], edges[threeP][fourP]);
 								}
 								else if (oneSum > threeSum && threeSum > twoSum) {
-									SumChargeGenerate(oneP, twoP, threeP, fourP, -3);
-
-									SumChargeGenerate(twoP, threeP, oneP, fourP, 2);
-
-									SumChargeGenerate(oneP, threeP, twoP, fourP, 1);
-									//SumTest(oneP, threeP, twoP, fourP);
+									EdgeCompare(edges[twoP][threeP], edges[oneP][fourP], edges[oneP][threeP], edges[twoP][fourP], edges[oneP][twoP], edges[threeP][fourP]);
 								}
 								else if (oneSum > twoSum && twoSum == threeSum) { 
 									std::cout << "FAIL" << std::endl;
@@ -98,20 +88,10 @@ void Graph::GenerateCharges()
 								} 
 								// TWO TWO TWO TWO TWO
 								else if (twoSum > oneSum && oneSum > threeSum) {
-									SumChargeGenerate(twoP, threeP, oneP, fourP, -3);
-
-									SumChargeGenerate(oneP, twoP, threeP, fourP, 1);
-									//SumTest(oneP, twoP, threeP, fourP);
-
-									SumChargeGenerate(oneP, threeP, twoP, fourP, 2);
+									EdgeCompare(edges[oneP][threeP], edges[twoP][fourP], edges[oneP][twoP], edges[threeP][fourP], edges[twoP][threeP], edges[oneP][fourP]);
 								}
 								else if (twoSum > threeSum && threeSum > oneSum) {
-									SumChargeGenerate(twoP, threeP, oneP, fourP, -3);
-
-									SumChargeGenerate(oneP, threeP, twoP, fourP, 1);
-									//SumTest(oneP, threeP, twoP, fourP);
-
-									SumChargeGenerate(oneP, twoP, threeP, fourP, 2);
+									EdgeCompare(edges[oneP][twoP], edges[threeP][fourP], edges[oneP][threeP], edges[twoP][fourP], edges[twoP][threeP], edges[oneP][fourP]);
 								}
 								else if (twoSum > oneSum && oneSum == threeSum) {
 									SumChargeGenerate(twoP, threeP, oneP, fourP, -3);
@@ -129,20 +109,10 @@ void Graph::GenerateCharges()
 								}
 								// THREE THREE THREE THREE THREE
 								else if (threeSum > oneSum && oneSum > twoSum) {
-									SumChargeGenerate(oneP, threeP, twoP, fourP, -3);
-
-									SumChargeGenerate(oneP, twoP, threeP, fourP, 1);
-									//SumTest(oneP, twoP, threeP, fourP);
-
-									SumChargeGenerate(twoP, threeP, oneP, fourP, 2);
+									EdgeCompare(edges[twoP][threeP], edges[oneP][fourP], edges[oneP][twoP], edges[threeP][fourP], edges[oneP][threeP], edges[twoP][fourP]);
 								}
 								else if (threeSum > twoSum && twoSum > oneSum) {
-									SumChargeGenerate(oneP, threeP, twoP, fourP, -3);
-
-									SumChargeGenerate(twoP, threeP, oneP, fourP, 1);
-									//SumTest(twoP, threeP, oneP, fourP);
-
-									SumChargeGenerate(oneP, twoP, threeP, fourP, 2);
+									EdgeCompare(edges[oneP][twoP], edges[threeP][fourP], edges[twoP][threeP], edges[oneP][fourP], edges[oneP][threeP], edges[twoP][fourP]);
 								}
 								else if (threeSum > oneSum && oneSum == twoSum) {
 									SumChargeGenerate(oneP, threeP, twoP, fourP, -3);
@@ -177,6 +147,8 @@ void Graph::SumChargeGenerate(int oneS, int twoS, int threeS, int fourS, double 
 	edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + chargeS);
 }
 
+
+
 void Graph::SumTestPlus(int oneS, int twoS, int threeS, int fourS, double chargeS) {
 	if (edges[oneS][twoS].GetLength() > edges[threeS][fourS].GetLength()) {
 		edges[oneS][twoS].SetCharge(edges[oneS][twoS].GetCharge() + chargeS / 2);
@@ -191,6 +163,116 @@ void Graph::SumTestPlus(int oneS, int twoS, int threeS, int fourS, double charge
 		edges[threeS][fourS].SetCharge(edges[threeS][fourS].GetCharge() + 1.5 * chargeS / 2);
 	}
 }
+
+void Graph::EdgeCompare(Edge& minEdgeOne, Edge& minEdgeTwo, Edge& middleEdgeOne, Edge& middleEdgeTwo, Edge& maxEdgeOne, Edge& maxEdgeTwo)
+{
+	bool plusStateCharge = false;
+	bool minusStateCharge = false;
+	if (((middleEdgeOne.GetLength() < minEdgeOne.GetLength() && middleEdgeOne.GetLength() < minEdgeTwo.GetLength()) 
+		|| (middleEdgeTwo.GetLength() < minEdgeOne.GetLength() && middleEdgeTwo.GetLength() < minEdgeTwo.GetLength())) 
+			|| ((minEdgeOne.GetLength() > middleEdgeOne.GetLength() && minEdgeOne.GetLength() > middleEdgeTwo.GetLength()) 
+				|| (minEdgeTwo.GetLength() > middleEdgeOne.GetLength() && minEdgeTwo.GetLength() > middleEdgeTwo.GetLength()))) {
+		plusStateCharge = true;
+	}
+	if (((middleEdgeOne.GetLength() > maxEdgeOne.GetLength() && middleEdgeOne.GetLength() > maxEdgeTwo.GetLength())
+		|| (middleEdgeTwo.GetLength() > maxEdgeOne.GetLength() && middleEdgeTwo.GetLength() > maxEdgeTwo.GetLength()))
+			|| ((maxEdgeOne.GetLength() < middleEdgeOne.GetLength() && maxEdgeOne.GetLength() < middleEdgeTwo.GetLength())
+				|| (maxEdgeTwo.GetLength() < middleEdgeOne.GetLength() && maxEdgeTwo.GetLength() < middleEdgeTwo.GetLength()))) {
+		minusStateCharge = true;
+	}
+
+	if (plusStateCharge && minusStateCharge) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+		       // (0; 0)
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (plusStateCharge && !minusStateCharge) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 2);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 2);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() + 1);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() + 1);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (minusStateCharge && !plusStateCharge) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() - 1);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() - 1);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 2);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 2);
+		return;
+	}
+
+	if (middleEdgeOne.GetLength() <= minEdgeOne.GetLength() || middleEdgeOne.GetLength() <= minEdgeTwo.GetLength()
+		|| middleEdgeTwo.GetLength() <= minEdgeOne.GetLength() || middleEdgeTwo.GetLength() <= minEdgeTwo.GetLength()) {
+		plusStateCharge = true;
+	}
+	if (middleEdgeOne.GetLength() >= maxEdgeOne.GetLength() || middleEdgeOne.GetLength() >= maxEdgeTwo.GetLength()
+		|| middleEdgeTwo.GetLength() >= maxEdgeOne.GetLength() || middleEdgeTwo.GetLength() >= maxEdgeTwo.GetLength()) {
+		minusStateCharge = true;
+	}
+
+	if (plusStateCharge && minusStateCharge) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+			   // (0; 0)
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (plusStateCharge && !minusStateCharge) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 2.5);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 2.5);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() + 0.5);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() + 0.5);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (minusStateCharge && !plusStateCharge) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() - 0.5);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() - 0.5);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 2.5);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 2.5);
+		return;
+	}
+	// Если не было выполнено ни одно условие, то используется стандартное распределение заряда 
+	// min Edges
+	minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+	minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+	// middle Edges
+		   // (0; 0)
+	// max Edges
+	maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+	maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+}
+
+
 
 void Graph::SumTestMinus(int oneS, int twoS, int threeS, int fourS, double chargeS) {
 	if (edges[oneS][twoS].GetLength() > edges[threeS][fourS].GetLength()) {
