@@ -1,5 +1,5 @@
 #include "Graph.h"
-
+#define CHARGE
 
 
 std::vector<Point>& Graph::GetPoints()
@@ -166,27 +166,119 @@ void Graph::SumTestPlus(int oneS, int twoS, int threeS, int fourS, double charge
 
 void Graph::EdgeCompare(Edge& minEdgeOne, Edge& minEdgeTwo, Edge& middleEdgeOne, Edge& middleEdgeTwo, Edge& maxEdgeOne, Edge& maxEdgeTwo)
 {
+	
+#ifdef CHARGE
 	bool plusStateCharge = false;
 	bool minusStateCharge = false;
-	if (((middleEdgeOne.GetLength() < minEdgeOne.GetLength() && middleEdgeOne.GetLength() < minEdgeTwo.GetLength()) 
-		|| (middleEdgeTwo.GetLength() < minEdgeOne.GetLength() && middleEdgeTwo.GetLength() < minEdgeTwo.GetLength())) 
-			|| ((minEdgeOne.GetLength() > middleEdgeOne.GetLength() && minEdgeOne.GetLength() > middleEdgeTwo.GetLength()) 
-				|| (minEdgeTwo.GetLength() > middleEdgeOne.GetLength() && minEdgeTwo.GetLength() > middleEdgeTwo.GetLength()))) {
+	double stateCharge = 0;
+	if ((middleEdgeOne.GetLength() < minEdgeOne.GetLength() && middleEdgeOne.GetLength() < minEdgeTwo.GetLength())
+		|| (middleEdgeTwo.GetLength() < minEdgeOne.GetLength() && middleEdgeTwo.GetLength() < minEdgeTwo.GetLength())
+		|| (minEdgeOne.GetLength() > middleEdgeOne.GetLength() && minEdgeOne.GetLength() > middleEdgeTwo.GetLength())
+			|| (minEdgeTwo.GetLength() > middleEdgeOne.GetLength() && minEdgeTwo.GetLength() > middleEdgeTwo.GetLength())) {
+		stateCharge++;
+		plusStateCharge = true;
+	}
+	if ((middleEdgeOne.GetLength() > maxEdgeOne.GetLength() && middleEdgeOne.GetLength() > maxEdgeTwo.GetLength())
+		|| (middleEdgeTwo.GetLength() > maxEdgeOne.GetLength() && middleEdgeTwo.GetLength() > maxEdgeTwo.GetLength())
+		|| (maxEdgeOne.GetLength() < middleEdgeOne.GetLength() && maxEdgeOne.GetLength() < middleEdgeTwo.GetLength())
+			|| (maxEdgeTwo.GetLength() < middleEdgeOne.GetLength() && maxEdgeTwo.GetLength() < middleEdgeTwo.GetLength())) {
+		stateCharge--;
+		minusStateCharge = true;
+	}
+	if (middleEdgeOne.GetLength() < minEdgeOne.GetLength() || middleEdgeOne.GetLength() < minEdgeTwo.GetLength()
+		|| middleEdgeTwo.GetLength() < minEdgeOne.GetLength() || middleEdgeTwo.GetLength() < minEdgeTwo.GetLength()) {
+		if (stateCharge != 1 && !plusStateCharge) {
+			stateCharge += 0.5;
+		}
+	}
+	if (middleEdgeOne.GetLength() > maxEdgeOne.GetLength() || middleEdgeOne.GetLength() > maxEdgeTwo.GetLength()
+		|| middleEdgeTwo.GetLength() > maxEdgeOne.GetLength() || middleEdgeTwo.GetLength() > maxEdgeTwo.GetLength()) {
+		if (stateCharge != -1 && !minusStateCharge) {
+			stateCharge -= 0.5;
+		}
+	}
+	///////////////////////////////////////////////////
+	if (stateCharge == 0) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+			   // (0; 0)
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (stateCharge == 1) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 2);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 2);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() + 1);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() + 1);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (stateCharge == 0.5) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 2.5);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 2.5);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() + 0.5);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() + 0.5);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+		return;
+	}
+	else if (stateCharge == -1) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() - 1);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() - 1);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 2);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 2);
+		return;
+	}
+	else if (stateCharge == -0.5) {
+		// min Edges
+		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
+		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
+		// middle Edges
+		middleEdgeOne.SetCharge(middleEdgeOne.GetCharge() - 0.5);
+		middleEdgeTwo.SetCharge(middleEdgeTwo.GetCharge() - 0.5);
+		// max Edges
+		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 2.5);
+		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 2.5);
+		return;
+	}
+	///////////////////////////////////////////////////
+#else
+	bool plusStateCharge = false;
+	bool minusStateCharge = false;
+	if (((middleEdgeOne.GetLength() < minEdgeOne.GetLength() && middleEdgeOne.GetLength() < minEdgeTwo.GetLength())
+		|| (middleEdgeTwo.GetLength() < minEdgeOne.GetLength() && middleEdgeTwo.GetLength() < minEdgeTwo.GetLength()))
+		|| ((minEdgeOne.GetLength() > middleEdgeOne.GetLength() && minEdgeOne.GetLength() > middleEdgeTwo.GetLength())
+			|| (minEdgeTwo.GetLength() > middleEdgeOne.GetLength() && minEdgeTwo.GetLength() > middleEdgeTwo.GetLength()))) {
 		plusStateCharge = true;
 	}
 	if (((middleEdgeOne.GetLength() > maxEdgeOne.GetLength() && middleEdgeOne.GetLength() > maxEdgeTwo.GetLength())
 		|| (middleEdgeTwo.GetLength() > maxEdgeOne.GetLength() && middleEdgeTwo.GetLength() > maxEdgeTwo.GetLength()))
-			|| ((maxEdgeOne.GetLength() < middleEdgeOne.GetLength() && maxEdgeOne.GetLength() < middleEdgeTwo.GetLength())
-				|| (maxEdgeTwo.GetLength() < middleEdgeOne.GetLength() && maxEdgeTwo.GetLength() < middleEdgeTwo.GetLength()))) {
+		|| ((maxEdgeOne.GetLength() < middleEdgeOne.GetLength() && maxEdgeOne.GetLength() < middleEdgeTwo.GetLength())
+			|| (maxEdgeTwo.GetLength() < middleEdgeOne.GetLength() && maxEdgeTwo.GetLength() < middleEdgeTwo.GetLength()))) {
 		minusStateCharge = true;
 	}
-
 	if (plusStateCharge && minusStateCharge) {
 		// min Edges
 		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
 		minEdgeTwo.SetCharge(minEdgeTwo.GetCharge() + 3);
 		// middle Edges
-		       // (0; 0)
+			   // (0; 0)
 		// max Edges
 		maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
 		maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
@@ -225,7 +317,6 @@ void Graph::EdgeCompare(Edge& minEdgeOne, Edge& minEdgeTwo, Edge& middleEdgeOne,
 		|| middleEdgeTwo.GetLength() >= maxEdgeOne.GetLength() || middleEdgeTwo.GetLength() >= maxEdgeTwo.GetLength()) {
 		minusStateCharge = true;
 	}
-
 	if (plusStateCharge && minusStateCharge) {
 		// min Edges
 		minEdgeOne.SetCharge(minEdgeOne.GetCharge() + 3);
@@ -270,6 +361,8 @@ void Graph::EdgeCompare(Edge& minEdgeOne, Edge& minEdgeTwo, Edge& middleEdgeOne,
 	// max Edges
 	maxEdgeOne.SetCharge(maxEdgeOne.GetCharge() - 3);
 	maxEdgeTwo.SetCharge(maxEdgeTwo.GetCharge() - 3);
+#endif // CHARGE
+
 }
 
 
