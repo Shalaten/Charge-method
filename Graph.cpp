@@ -168,34 +168,31 @@ void Graph::EdgeCompare(Edge& minEdgeOne, Edge& minEdgeTwo, Edge& middleEdgeOne,
 {
 	
 #ifdef CHARGE
-	bool plusStateCharge = false;
-	bool minusStateCharge = false;
 	double stateCharge = 0;
-	if ((middleEdgeOne.GetLength() < minEdgeOne.GetLength() && middleEdgeOne.GetLength() < minEdgeTwo.GetLength())
-		|| (middleEdgeTwo.GetLength() < minEdgeOne.GetLength() && middleEdgeTwo.GetLength() < minEdgeTwo.GetLength())
-		|| (minEdgeOne.GetLength() > middleEdgeOne.GetLength() && minEdgeOne.GetLength() > middleEdgeTwo.GetLength())
-			|| (minEdgeTwo.GetLength() > middleEdgeOne.GetLength() && minEdgeTwo.GetLength() > middleEdgeTwo.GetLength())) {
-		stateCharge++;
-		plusStateCharge = true;
+	if (middleEdgeOne.GetLength() <= minEdgeOne.GetLength()) {
+		stateCharge += 0.5;
 	}
-	if ((middleEdgeOne.GetLength() > maxEdgeOne.GetLength() && middleEdgeOne.GetLength() > maxEdgeTwo.GetLength())
-		|| (middleEdgeTwo.GetLength() > maxEdgeOne.GetLength() && middleEdgeTwo.GetLength() > maxEdgeTwo.GetLength())
-		|| (maxEdgeOne.GetLength() < middleEdgeOne.GetLength() && maxEdgeOne.GetLength() < middleEdgeTwo.GetLength())
-			|| (maxEdgeTwo.GetLength() < middleEdgeOne.GetLength() && maxEdgeTwo.GetLength() < middleEdgeTwo.GetLength())) {
-		stateCharge--;
-		minusStateCharge = true;
+	if (middleEdgeOne.GetLength() <= minEdgeTwo.GetLength()) {
+		stateCharge += 0.5;
 	}
-	if (middleEdgeOne.GetLength() < minEdgeOne.GetLength() || middleEdgeOne.GetLength() < minEdgeTwo.GetLength()
-		|| middleEdgeTwo.GetLength() < minEdgeOne.GetLength() || middleEdgeTwo.GetLength() < minEdgeTwo.GetLength()) {
-		if (stateCharge != 1 && !plusStateCharge) {
-			stateCharge += 0.5;
-		}
+	if (middleEdgeTwo.GetLength() <= minEdgeOne.GetLength()) {
+		stateCharge += 0.5;
 	}
-	if (middleEdgeOne.GetLength() > maxEdgeOne.GetLength() || middleEdgeOne.GetLength() > maxEdgeTwo.GetLength()
-		|| middleEdgeTwo.GetLength() > maxEdgeOne.GetLength() || middleEdgeTwo.GetLength() > maxEdgeTwo.GetLength()) {
-		if (stateCharge != -1 && !minusStateCharge) {
-			stateCharge -= 0.5;
-		}
+	if (middleEdgeTwo.GetLength() <= minEdgeTwo.GetLength()) {
+		stateCharge += 0.5;
+	}
+
+	if (middleEdgeOne.GetLength() >= maxEdgeOne.GetLength()) {
+		stateCharge -= 0.5;
+	}
+	if (middleEdgeOne.GetLength() >= maxEdgeTwo.GetLength()) {
+		stateCharge -= 0.5;
+	}
+	if (middleEdgeTwo.GetLength() >= maxEdgeOne.GetLength()) {
+		stateCharge -= 0.5;
+	}
+	if (middleEdgeTwo.GetLength() >= maxEdgeTwo.GetLength()) {
+		stateCharge -= 0.5;
 	}
 	///////////////////////////////////////////////////
 	if (stateCharge == 0) {
